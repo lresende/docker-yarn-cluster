@@ -1,6 +1,6 @@
 # Creates pseudo distributed hadoop 2.6.0
 #
-# docker build -t sequenceiq/hadoop .
+# sudo docker build -t yarn_cluster .
 
 FROM sequenceiq/pam:centos-6.5
 MAINTAINER Luciano Resende lresende@apache.org

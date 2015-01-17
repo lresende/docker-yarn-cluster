@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo docker run -i -t -p 8088:8088 -p 50070:50070 -p 50075:50075 --name namenode -h namenode --workdir /usr/local/hadoop yarn_cluster /etc/bootstrap.sh -bash -namenode
