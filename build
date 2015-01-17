@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build  -t yarn_cluster .
+sudo docker build  -t yarn-cluster .

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #sudo docker run -i -t --name datanode_1 -h datanode_1 --link namenode:namenode --workdir /usr/local/hadoop yarn_cluster /etc/bootstrap.sh -bash
-sudo docker run -i -t --link namenode:namenode --dns=namenode --workdir /usr/local/hadoop yarn_cluster /etc/bootstrap.sh -bash -datanode
+sudo docker run -i -t --link namenode:namenode --dns=namenode --workdir /usr/local/hadoop yarn-cluster /etc/bootstrap.sh -bash -datanode
