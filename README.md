@@ -13,7 +13,7 @@ sudo docker build  -t yarn-cluster .
 In order to use the Docker image you have just build or pulled use:
 
 ```
-sudo docker run -i -t --name namenode -h namenode --workdir /usr/local/hadoop yarn-cluster /etc/bootstrap.sh -bash -namenode
+sudo docker run -i -t --name namenode -h namenode yarn-cluster /etc/bootstrap.sh -bash -namenode
 ```
 
 **Make sure that SELinux is disabled on the host. If you are using boot2docker you don't need to do anything.**
@@ -23,7 +23,7 @@ sudo docker run -i -t --name namenode -h namenode --workdir /usr/local/hadoop ya
 In order to add data nodes to the Apache Yarn cluster, use:
 
 ```
-sudo docker run -i -t --link namenode:namenode --dns=namenode --workdir /usr/local/hadoop yarn-cluster /etc/bootstrap.sh -bash -datanode
+sudo docker run -i -t --link namenode:namenode --dns=namenode yarn-cluster /etc/bootstrap.sh -bash -datanode
 ```
 
 **Make sure that SELinux is disabled on the host. If you are using boot2docker you don't need to do anything.**
