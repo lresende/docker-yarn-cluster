@@ -16,6 +16,10 @@ In order to use the Docker image you have just build or pulled use:
 sudo docker run -i -t --name namenode -h namenode yarn-cluster /etc/bootstrap.sh -bash -namenode
 ```
 
+You should now be able to access the Hadoop Admin UI at
+
+http://<host>:8088/cluster
+
 **Make sure that SELinux is disabled on the host. If you are using boot2docker you don't need to do anything.**
 
 # Start an Apache Yarn datanode container
@@ -25,6 +29,10 @@ In order to add data nodes to the Apache Yarn cluster, use:
 ```
 sudo docker run -i -t --link namenode:namenode --dns=namenode yarn-cluster /etc/bootstrap.sh -bash -datanode
 ```
+
+You should now be able to access the HDFS Admin UI at
+
+http://<host>:50070
 
 **Make sure that SELinux is disabled on the host. If you are using boot2docker you don't need to do anything.**
 
