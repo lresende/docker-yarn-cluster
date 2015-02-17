@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build  -t yarn-cluster .
+sudo docker build --rm --no-cache -t yarn-cluster .
