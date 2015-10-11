@@ -1,3 +1,17 @@
 #!/bin/bash
 
-sudo docker build --rm --no-cache -t yarn-cluster .
+platform='unknown'
+unamestr=`uname`
+if [[ "$unamestr" == 'Linux' ]]; then
+   platform='linux'
+elif [[ "$unamestr" == 'FreeBSD' ]]; then
+   platform='freebsd'
+ elif [[ "$unamestr" == 'Darwin' ]]; then
+    platform='osx'
+fi
+
+if [[ $platform != 'osx' ]]; then
+  alias docker='sudo docker'
+fi
+
+docker build --rm --no-cache -t yarn-cluster .
