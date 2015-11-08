@@ -1,4 +1,4 @@
-#Apache Yarn 2.6.0 cluster Docker image
+#Apache Yarn 2.7.1 cluster Docker image
 
 # Build the image
 
@@ -48,8 +48,14 @@ bin/hdfs dfs -mkdir -p /user/root
 bin/hdfs dfs -put $HADOOP_PREFIX/etc/hadoop/ input
 
 # run the mapreduce
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar grep input output 'dfs[a-z.]+'
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar grep input output 'dfs[a-z.]+'
 
 # check the output
 bin/hdfs dfs -cat output/*
+```
+
+# Start Apache Yarn namenode and datanode container by using docker-compose
+
+```
+sudo docker-compose -f docker-compose up -d
 ```

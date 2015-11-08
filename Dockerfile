@@ -3,7 +3,7 @@
 # sudo docker build -t yarn_cluster .
 
 FROM sequenceiq/pam:centos-6.5
-MAINTAINER Shunsuke Wada letusfly95@gmail.com
+MAINTAINER Luciano Resende lresende@apache.org
 
 USER root
 
