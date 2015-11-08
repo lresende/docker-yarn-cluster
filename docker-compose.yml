@@ -1,0 +1,18 @@
+namenode:
+  image: yarn-cluster
+  container_name: namenode
+  hostname: namenode
+  ports:
+    - "8088:8088"
+    - "50090:50090"
+  command: "/etc/bootstrap.sh -d -namenode"
+datanode:
+  image: yarn-cluster
+  container_name: datanode
+  links:
+    - "namenode:namenode"
+  ports:
+    - "50070:50070"
+  hostname: datanode 
+  dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
+  command: "/etc/bootstrap.sh -d -datanode"
