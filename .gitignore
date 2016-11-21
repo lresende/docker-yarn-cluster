@@ -1,1 +1,15 @@
+# Mac
+.DS_Store
+
+# Eclipse
+.classpath
 .project
+.settings/
+
+# Intellij
+.idea/
+.idea_modules/
+*.iml
+*.iws
+*.class
+*.log
