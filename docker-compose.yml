@@ -1,18 +1,80 @@
-namenode:
-  image: yarn-cluster
-  container_name: namenode
-  hostname: namenode
-  ports:
-    - "8088:8088"
-    - "50090:50090"
-  command: "/etc/bootstrap.sh -d -namenode"
-datanode:
-  image: yarn-cluster
-  container_name: datanode
-  links:
-    - "namenode:namenode"
-  ports:
-    - "50070:50070"
-  hostname: datanode 
-  dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
-  command: "/etc/bootstrap.sh -d -datanode"
+version: '2'
+
+networks:
+  yarn-network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.25.0.0/24
+
+services:
+    namenode:
+      image: yarn-cluster
+      container_name: namenode
+      hostname: namenode
+      ports:
+        - "8088:8088"
+        - "50090:50090"
+      command: "/etc/bootstrap.sh -d -namenode"
+      networks:
+        yarn-network:
+            ipv4_address: 172.25.0.3
+      extra_hosts:
+        - "namenode:172.25.0.3"
+        - "datanode1:172.25.0.4"
+        - "datanode2:172.25.0.5"
+        - "datanode3:172.25.0.6"
+    datanode1:
+      image: yarn-cluster
+      container_name: datanode1
+      links:
+        - "namenode:namenode"
+      ports:
+        - "50070:50070"
+      hostname: datanode1
+      # dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
+      command: "/etc/bootstrap.sh -d -datanode"
+      networks:
+        yarn-network:
+            ipv4_address: 172.25.0.4
+      extra_hosts:
+        - "namenode:172.25.0.3"
+        - "datanode1:172.25.0.4"
+        - "datanode2:172.25.0.5"
+        - "datanode3:172.25.0.6"
+    datanode2:
+      image: yarn-cluster
+      container_name: datanode2
+      links:
+        - "namenode:namenode"
+      ports:
+        - "50075:50075"
+      hostname: datanode2
+      # dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
+      command: "/etc/bootstrap.sh -d -datanode"
+      networks:
+        yarn-network:
+            ipv4_address: 172.25.0.5
+      extra_hosts:
+        - "namenode:172.25.0.3"
+        - "datanode1:172.25.0.4"
+        - "datanode2:172.25.0.5"
+        - "datanode3:172.25.0.6"
+    datanode3:
+      image: yarn-cluster
+      container_name: datanode3
+      links:
+        - "namenode:namenode"
+      ports:
+        - "50080:50080"
+      hostname: datanode3
+      # dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
+      command: "/etc/bootstrap.sh -d -datanode"
+      networks:
+        yarn-network:
+            ipv4_address: 172.25.0.6
+      extra_hosts:
+        - "namenode:172.25.0.3"
+        - "datanode1:172.25.0.4"
+        - "datanode2:172.25.0.5"
+        - "datanode3:172.25.0.6"
