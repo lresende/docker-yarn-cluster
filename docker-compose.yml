@@ -32,7 +32,6 @@ services:
       ports:
         - "50070:50070"
       hostname: datanode1
-      # dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
       command: "/etc/bootstrap.sh -d -datanode"
       networks:
         yarn-network:
@@ -50,7 +49,6 @@ services:
       ports:
         - "50075:50075"
       hostname: datanode2
-      # dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
       command: "/etc/bootstrap.sh -d -datanode"
       networks:
         yarn-network:
@@ -68,7 +66,6 @@ services:
       ports:
         - "50080:50080"
       hostname: datanode3
-      # dns: "docker inspect --format=\"{{ .NetworkSettings.IPAddress }}\" namenode"
       command: "/etc/bootstrap.sh -d -datanode"
       networks:
         yarn-network:
