@@ -14,4 +14,4 @@ if [[ $platform != 'osx' ]]; then
   alias docker='sudo docker'
 fi
 
-docker build --rm --no-cache -t yarn-cluster .
+docker build -t yarn-cluster .

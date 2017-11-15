@@ -22,10 +22,10 @@ RUN ssh-keygen -q -N "" -t rsa -f /root/.ssh/id_rsa
 RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
 # java
-RUN curl -LO 'http://download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.rpm' -H 'Cookie: oraclelicense=accept-securebackup-cookie' && \
-    yum -y install jdk-8u111-linux-x64.rpm && \
+RUN curl -LO 'http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.rpm' -H 'Cookie: oraclelicense=accept-securebackup-cookie' && \
+    yum -y install jdk-8u151-linux-x64.rpm && \
     yum clean all && \
-    rm -vf jdk-8u111-linux-x64.rpm
+    rm -vf jdk-8u151-linux-x64.rpm
 
 ENV JAVA_HOME /usr/java/default
 ENV PATH $PATH:$JAVA_HOME/bin
@@ -33,8 +33,8 @@ RUN rm /usr/bin/java && ln -s $JAVA_HOME/bin/java /usr/bin/java
 
 # =======
 # hadoop
-RUN curl -s http://www.eu.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz | tar -xz -C /usr/local/
-RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
+RUN curl -s http://apache.claz.org/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz | tar -xz -C /usr/local/
+RUN cd /usr/local && ln -s ./hadoop-2.7.4 hadoop
 
 ENV HADOOP_PREFIX /usr/local/hadoop
 ENV HADOOP_COMMON_HOME /usr/local/hadoop
@@ -68,11 +68,20 @@ ADD ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config
 RUN chown root:root /root/.ssh/config
 
+ADD slaves $HADOOP_PREFIX/slaves
+RUN chmod 600 $HADOOP_PREFIX/slaves
+RUN chown root:root $HADOOP_PREFIX/slaves
+
+ADD wordcount.sh $HADOOP_PREFIX/wordcount.sh
+RUN chmod 700 $HADOOP_PREFIX/wordcount.sh
+RUN chown root:root $HADOOP_PREFIX/wordcount.sh
+
 ADD bootstrap.sh /etc/bootstrap.sh
-RUN chown root:root /etc/bootstrap.sh
 RUN chmod 700 /etc/bootstrap.sh
+RUN chown root:root /etc/bootstrap.sh
 
 ENV BOOTSTRAP /etc/bootstrap.sh
+ENV PATH $PATH:$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin
 
 # workingaround docker.io build error
 RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
@@ -84,6 +93,8 @@ RUN sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config
 RUN echo "UsePAM no" >> /etc/ssh/sshd_config
 RUN echo "Port 2122" >> /etc/ssh/sshd_config
 
+WORKDIR $HADOOP_PREFIX
+
 CMD ["/etc/bootstrap.sh", "-d"]
 
 # Hdfs ports
@@ -93,4 +104,4 @@ EXPOSE 19888
 #Yarn ports
 EXPOSE 8030 8031 8032 8033 8040 8042 8088
 #Other ports
-EXPOSE 49707 2122   
+EXPOSE 49707 2122

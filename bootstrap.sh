@@ -11,13 +11,15 @@ cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; 
 
 service sshd start
 
+# only need to let master node know the slave node's hostnames,
+# so that hdfs knows where are the datanodes,
+# and yarn knows where are the nodemanagers.
+# and we only need to start-dfs and start-yarn from namenode!
+# ref: https://www.edureka.co/blog/hadoop-cluster-configuration-files/
 if [[ $1 = "-namenode" || $2 = "-namenode" ]]; then
-  $HADOOP_PREFIX/sbin/start-dfs.sh
-  $HADOOP_PREFIX/sbin/start-yarn.sh
-fi
-
-if [[ $1 = "-datanode" || $2 = "-datanode" ]]; then
-  $HADOOP_PREFIX/sbin/start-dfs.sh
+    cat $HADOOP_PREFIX/slaves > $HADOOP_PREFIX/etc/hadoop/slaves
+    $HADOOP_PREFIX/sbin/start-dfs.sh
+    $HADOOP_PREFIX/sbin/start-yarn.sh
 fi
 
 if [[ $1 = "-d" || $2 = "-d" ]]; then
