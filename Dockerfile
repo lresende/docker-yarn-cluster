@@ -68,15 +68,20 @@ ADD ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config
 RUN chown root:root /root/.ssh/config
 
-ADD slaves /etc/slaves
-RUN chmod 600 /etc/slaves
-RUN chown root:root /etc/slaves
+ADD slaves $HADOOP_PREFIX/slaves
+RUN chmod 600 $HADOOP_PREFIX/slaves
+RUN chown root:root $HADOOP_PREFIX/slaves
+
+ADD wordcount.sh $HADOOP_PREFIX/wordcount.sh
+RUN chmod 700 $HADOOP_PREFIX/wordcount.sh
+RUN chown root:root $HADOOP_PREFIX/wordcount.sh
 
 ADD bootstrap.sh /etc/bootstrap.sh
-RUN chown root:root /etc/bootstrap.sh
 RUN chmod 700 /etc/bootstrap.sh
+RUN chown root:root /etc/bootstrap.sh
 
 ENV BOOTSTRAP /etc/bootstrap.sh
+ENV PATH $PATH:$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin
 
 # workingaround docker.io build error
 RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
@@ -87,6 +92,8 @@ RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
 RUN sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config
 RUN echo "UsePAM no" >> /etc/ssh/sshd_config
 RUN echo "Port 2122" >> /etc/ssh/sshd_config
+
+WORKDIR $HADOOP_PREFIX
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
